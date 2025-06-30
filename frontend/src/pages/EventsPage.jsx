@@ -24,7 +24,7 @@ function EventsPage() {
 export default EventsPage
 
 export async function eventsLoader() {
-  const res = await fetch('http://localhost:8080/evets');
+  const res = await fetch('http://localhost:8080/events');
   if (!res.ok) {
     // return { status: 500, body: 'Could not fetch data' }
     throw new Response(JSON.stringify({ message: "failed Loadung" }), { status: 500 }); // nearest Error Element aus dem router wird gesucht und gerendert

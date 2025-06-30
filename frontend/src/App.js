@@ -2,12 +2,14 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import HomePage from './pages/HomePage';
 import EditEventPage from './pages/EditEventPage';
-import EventDetailPage from './pages/EventDetailPage';
+import EventDetailPage, { loader as EventDetailLoader, action as EventDeleteAction } from './pages/EventDetailPage';
 import EventsPage, { eventsLoader } from './pages/EventsPage';
-import NewEventPage from './pages/NewEventPage';
+import NewEventPage, { action as NewEventAction } from './pages/NewEventPage';
 import ErrorPage from "./pages/ErrorPage";
 import Layout from "./pages/RootLayout";
 import EventsLayout from "./pages/EventsLayout";
+import NewsletterPage, { action as newsletterAction } from "./pages/Newsletter";
+
 
 
 function App() {
@@ -26,10 +28,26 @@ function App() {
               element: <EventsPage />,
               loader: eventsLoader
             },
-            { path: 'new', element: <NewEventPage /> },
-            { path: ':id', element: <EventDetailPage /> },
-            { path: ':id/edit', element: <EditEventPage /> }
+            { path: 'new', element: <NewEventPage />, action: NewEventAction },
+            {
+              path: ':id',
+              loader: EventDetailLoader,
+              id: 'detailEvent',
+              children: [
+                {
+                  index: true,
+                  element: <EventDetailPage />,
+                  action: EventDeleteAction
+                },
+                { path: 'edit', element: <EditEventPage /> }
+              ]
+            }
           ]
+        },
+        {
+          path: 'newsletter',
+          element: <NewsletterPage />,
+          action: newsletterAction,
         },
       ],
       errorElement: <ErrorPage />
